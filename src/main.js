@@ -71,7 +71,7 @@ router.beforeEach(function (to,from,next) {
 })
 
 /* eslint-disable no-new */
-var app = new Vue({
+ new Vue({
   el: '#app',
   router,
   // store,

@@ -1,33 +1,32 @@
 /* Sidebar Menu*/
-$(document).ready(function () {
-  $('.nav > li > a').click(function(){
-    if ($(this).attr('class') != 'active'){
-      $('.nav li ul').slideUp();
-      $(this).next().slideToggle();
-      $('.nav li a').removeClass('active');
-      $(this).addClass('active');
-    }
-  });
-});
+// $(document).ready(function () {
+//   $('.nav > li > a').click(function(){
+//     if ($(this).attr('class') != 'active'){
+//       $('.nav li ul').slideUp();
+//       $(this).next().slideToggle();
+//       $('.nav li a').removeClass('active');
+//       $(this).addClass('active');
+//     }
+//   });
+// });
 
 /* Top Stats Show Hide */
-$(document).ready(function(){
-    $("#topstats").click(function(){
-        $(".topstats").slideToggle(100);
-    });
-});
+// $(document).ready(function(){
+//     $("#topstats").click(function(){
+//         $(".topstats").slideToggle(100);
+//     });
+// });
 
 
 /* Sidepanel Show-Hide */
-$(document).ready(function(){
-    $(".sidepanel-open-button").click(function(){
-        $(".sidepanel").toggle(100);
-    });
-});
+// $(document).ready(function(){
+//     $(".sidepanel-open-button").click(function(){
+//         $(".sidepanel").toggle(100);
+//     });
+// });
 
-
-
-/* Sidebar Show-Hide On Mobile */
+//
+// /* Sidebar Show-Hide On Mobile */
 $(document).ready(function(){
     $(".sidebar-open-button-mobile").click(function(){
         $(".sidebar").toggle(150);

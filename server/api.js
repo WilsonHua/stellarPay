@@ -23,9 +23,9 @@ var sourceKeys ='',sourceAcoount='';
 
 
 router.post('/kInfo',function (req,res) {
-  console.log(req.body.Keypair);
-        sourceKeys = StellarSdk.Keypair.fromSeed(req.body.Keypair);
-        sourceAcoount = sourceKeys.accountId();
+        sourceKeys = req.body.Keypair;
+        sourceAcoount = StellarSdk.Keypair.fromSeed(sourceKeys).accountId();
+        console.log('sourceKeys'+sourceKeys);
 
         responseData.code = 1;
         res.json(responseData);
@@ -181,42 +181,41 @@ router.post('/payment',function (req,res) {
 // 	});
 // });
 
-router.get('/stream_effects',function (req,res) {
-  var payments = server.payments().forAccount(account_id),
-      effects_result = [];
-  payments.stream({
-      onmessage: function(payment) {
-          // Record the paging token so we can start from here next time.
-          // savePagingToken(payment.paging_token);
-
-          // The payments stream includes both sent and received payments. We only
-          // want to process received payments here.
-          if (payment.to !== account_id) {
-              return;
-          }
-
-          // In Stellar’s API, Lumens are referred to as the “native” type. Other
-          // asset types have more detailed information.
-          var asset;
-          if (payment.asset_type === 'native') {
-              asset = 'lumens';
-          }
-          else {
-              asset = payment.asset_code;
-          }
-          var effects_code = {
-            amount      : payment.amount,
-            asset_code  : asset,
-            from        : payment.from
-          }
-          console.log(effects_code);
-      },
-
-      onerror: function(error) {
-        console.error('Error in payment stream');
-      }
-
-  });
-
-});
+// router.get('/stream_effects',function (req,res) {
+//   console.log(sourceAcoount)
+//   var payments = server.payments().forAccount(sourceAcoount);
+//   payments.stream({
+//       onmessage: function(payment) {
+//           // Record the paging token so we can start from here next time.
+//           // savePagingToken(payment.paging_token);
+//
+//           // The payments stream includes both sent and received payments. We only
+//           // want to process received payments here.
+//           if (payment.to !== sourceAcoount) {
+//               return;
+//           }
+//
+//           // In Stellar’s API, Lumens are referred to as the “native” type. Other
+//           // asset types have more detailed information.
+//           var asset;
+//           if (payment.asset_type === 'native') {
+//               asset = 'lumens';
+//           }
+//           else {
+//               asset = payment.asset_code;
+//           }
+//           var effects_code = {
+//             amount      : payment.amount,
+//             asset_code  : asset,
+//             from        : payment.from
+//           }
+//       },
+//
+//       onerror: function(error) {
+//         console.error('Error in payment stream');
+//       }
+//
+//   });
+//
+// });
 module.exports = router;

@@ -5,28 +5,28 @@
     <div class="col-md-12">
       <div class="panel panel-default">
         <div class="panel-title">
-          DAtaTables
+          交易记录
         </div>
         <div class="panel-body table-responsive">
 
             <table id="example0" class="table display">
                 <thead>
                     <tr>
-                        <th>Name</th>
-                        <th>Position</th>
-                        <th>Office</th>
+                        <th>类型</th>
+                        <th>数量</th>
+                        <th>账户地址</th>
                         <th>Age</th>
-                        <th>Start date</th>
+                        <th>时间</th>
                     </tr>
                 </thead>
 
                 <tfoot>
                     <tr>
-                        <th>Name</th>
-                        <th>Position</th>
-                        <th>Office</th>
+                        <th>类型</th>
+                        <th>数量</th>
+                        <th>账户地址</th>
                         <th>Age</th>
-                        <th>Start date</th>
+                        <th>时间</th>
                     </tr>
                 </tfoot>
 
@@ -106,7 +106,8 @@ var server = new StellarSdk.Server('https://horizon-testnet.stellar.org');
       },
       stream_effects:function () {
         //初始化函数
-        var account_id = 'GBS7IAXICCZ62XLYKVFDYG7TLLIARICSWF47QJKRNMUOZVBP24D47X4B';
+        var account_id = StellarSdk.Keypair
+              .fromSeed(sessionStorage.Keypair).accountId();
         var payments = server.payments().order('desc').forAccount(account_id);
         var arr = new Array();
         var vm = this;

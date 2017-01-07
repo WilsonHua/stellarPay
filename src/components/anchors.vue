@@ -101,6 +101,7 @@ export default{
       vm.$http.get('api/loadAccount')
         .then((doneCallbacks, failCallbacks)=>{
             vm.anchors_info = doneCallbacks.body.value.balances
+            vm.anchors_info[vm.anchors_info.length-1]=''
         })
     }
   }

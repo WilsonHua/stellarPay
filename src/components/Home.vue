@@ -8,16 +8,15 @@
       <!-- End Page Loading -->
     <!-- Start Page Header -->
     <div class="page-header">
-      <h1 class="title">Overview</h1>
+      <h1 class="title">welcome!</h1>
         <ol class="breadcrumb">
-          <li class="active">This is a stellar wallet!You can follow it on <a href="https://github.com/blocklol">@github.com/block.lol</a></li>
-      </ol>
+          <li>这是一个基于stellar之上的钱包服务，可以通过stellar地址进行快速的转账、支付、发行资产等。提供更好的用户体验！</li>
+          <!-- <li class="active">This is a stellar wallet!You can follow it on <a href="https://github.com/blocklol">@github.com/block.lol</a></li> -->
+        </ol>
 
       <!-- Start Page Header Right Div -->
       <div class="right">
-        <div class="btn-group" role="group" aria-label="...">
-          <a href="javascript:void(0);" class="btn btn-light" id="topstats"><i class="fa fa-line-chart"></i></a>
-        </div>
+
       </div>
       <!-- End Page Header Right Div -->
 
@@ -43,7 +42,7 @@
       <!-- Start Transfer -->
       <transfer></transfer>
       <!-- End Transfer -->
-
+      <receive></receive>
       <!-- Start history -->
       <keep-alive>
       <history  keep-alive></history>
@@ -153,22 +152,22 @@
 import balance from './balance'
 import history from './history'
 import transfer from './transfer'
+import receive from './receive'
 
 export default{
   data(){
       return{
-
+        accountID:sessionStorage.Keypair
       }
   },
   components:{
     'balance':balance,
     'history':history,
-    'transfer':transfer
+    'transfer':transfer,
+    'receive':receive,
   },
   methods:{
-    aaa:function () {
 
-    }
   }
 };
 

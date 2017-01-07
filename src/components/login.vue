@@ -6,20 +6,20 @@
     <div class="top">
       <img src="/static/img/kode-icon.png" alt="icon" class="icon profile">
       <h1>block.lol</h1>
-      <h4>Unlock Screen</h4>
+      <h4>输入私钥即可登录</h4>
     </div>
     <div class="form-area">
       <div class="group">
         <input type="password" class="form-control" placeholder="Secret key" v-model='data.Keypair'>
         <i class="fa fa-key"></i>
       </div>
-      <button type="submit" v-on:click="submit" class="btn btn-default btn-block">LOGIN</button>
+      <button type="submit" v-on:click="submit" class="btn btn-default btn-block">登录</button>
     </div>
     <div class="footer-links">
       <div class="text-right">
-        <a href="javascript:void(0);" v-on:click="createAccount"><i class="fa fa-lock"></i> Create an account</a></div>
+        <a href="javascript:void(0);" v-on:click="createAccount"><i class="fa fa-lock"></i> 创建新的账户</a></div>
       </div>
-    <div class="account-show" v-if="show">public_key:<br>{{Account_key.public_key}}<br>seed:<br>{{Account_key.seed}}</div>
+    <div class="account-show" v-if="show"><b>public_key :</b><br>{{Account_key.public_key}}<br><b>Secret Key :</b><br>{{Account_key.seed}}</div>
   </form>
 
 </div>
@@ -48,7 +48,6 @@ export default{
       }
       else {
         sessionStorage.Keypair = vm.data.Keypair;
-        console.log("sesion:::::"+sessionStorage.Keypair);
         vm.$http.post('api/kInfo',vm.data)
           .then((data, error)=>{
             // if(data.code!==1){
@@ -68,7 +67,7 @@ export default{
         })
     },
     alert:function () {
-      swal("Here's a message!", "It's pretty, isn't it?")
+      swal("", "")
     }
   }
 
@@ -77,33 +76,7 @@ export default{
 };
 </script>
 <style scoped>
-/*@import url('/static/css/plugin/Materialize/materialize.css');*/
-/*
-.margin {
-  margin: 0 !important;
-}
-.btn:hover {
-  color: #fff;
-}
 
-.holder{
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  margin-left: -12.5rem!important;
-  margin-top: -16.5rem;
-  width:25rem!important;
-  overflow: hidden;
-}
-.input-field .prefix{
-    top: 10px;;
-}
-.login-form{
-  width: auto;;
-}
-.form-control{
-  width: 80%;
-}*/
 .bg {
     position: absolute;
     width: 100%;
@@ -113,8 +86,12 @@ export default{
     background: url('/static/img/bg.jpg') no-repeat;
 }
 .account-show{
+  margin: 0 10px 5px;
   padding: 0 15px 0 15px;
   word-break: break-all;
+  border: 1px solid #383;
+  border-radius: 3px;
+  background: #d6e7d6;
 }
 .login-form .footer-links{
   margin-top: -30px;
