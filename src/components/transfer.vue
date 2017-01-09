@@ -61,7 +61,7 @@
         <div class="form-group">
           <label for="inputNumber" class="col-sm-2 control-label">备注</label>
           <div class="col-sm-10">
-            <textarea type="text" class="form-control"  rows="3" v-model='payment_data.memo' placeholder="输入你想要备注的信息........"></textarea>
+            <textarea type="text" class="form-control"  rows="3" v-model='payment_data.memo' placeholder="(可空)  输入你想要备注的信息........"></textarea>
           </div>
           <!-- <div class="col-sm-4">
             <select class="form-control btn" v-model='payment_data.memo_type' >
@@ -112,36 +112,49 @@ export default{
       }
   },
   mounted(){
-    this.reload_banlance ()
+    this.loadAccount ()
   },
   methods:{
     sending () {
       var vm = this;
-      if(vm.payment_data.address===''){
-        vm.validator_obj.accountID = null;
-        return;
-      }
-      if(vm.payment_data.amount==='' || vm.payment_data.amount==='0'){
-        vm.validator_obj.amount = null;
-        return;
-      }
+      // if(vm.payment_data.address===''){
+      //   vm.validator_obj.accountID = null;
+      //   return;
+      // }
+      // if(vm.payment_data.amount==='' || vm.payment_data.amount==='0'){
+      //   vm.validator_obj.amount = null;
+      //   return;
+      // }
       vm.show = false;
       vm.$http.post('api/payment',vm.payment_data)
-        .then((doneCallbacks, failCallbacks)=>{
-          vm.$set(vm.payment_data,{})
+        .then((data, error)=>{
+          if(data.body.code === 1){
+            vm.$set(vm.payment_data,{})
             vm.show = true;
-            swal("发送成功!", "你成功完成了这笔支付！", "success")
+            swal("发送成功!", "你成功完成了这笔支付！", "success");
+          }
+          else if(data.body.message.status === 400){
+            const ecode = data.body.message.extras.result_codes.operations[0];
+            console.log(ecode);
+            if(ecode==="op_no_trust"){
+              swal("操作失败!", "对方账户尚未信任", "error")
+              return;
+            }
+            swal("操作失败!", "提交失败，请检查填写是否正确", "error")
+          }
+          else {
+            vm.show = true;
+            swal("发送失败!", data.body.message || data.body.message.errno, "error")
+            console.log(data.body.message)
+          }
         })
     },
-    reload_banlance () {
+    loadAccount () {
       var vm = this;
       vm.$http.get('api/loadAccount')
         .then((doneCallbacks, failCallbacks)=>{
-          // vm.$set(vm.account_info,doneCallbacks.body.value)
           vm.account_info = doneCallbacks.body.value.balances;
         })
-      // vm.asset_code==='XLM'?vm.un_native='false':vm.un_native='true'
-      // console.log(vm.un_native);
     },
     validator (){
       validator_obj

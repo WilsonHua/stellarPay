@@ -1,52 +1,54 @@
 <template>
   <!-- Start Row -->
   <div class="row">
+    <div class="col-md-6 col-lg-3">
+        <div id="alertTip" class="kode-alert-icon kode-alert alert3 kode-alert-top-right" v-show = "tipSuccess" style="display:block">
+          <i class="fa fa-check"></i>
+          <a href="#" class="closed">×</a>
+          <h4>消息提示</h4>
+          成功收到一笔交易，详情查看交易记录
+        </div>
+    </div>
+
+
     <!-- Start Panel -->
     <div class="col-md-12">
-      <div class="panel panel-default">
+      <div class="panel panel-default" style="500px">
+
         <div class="panel-title">
           交易记录
         </div>
         <div class="panel-body table-responsive">
-
-            <table id="example0" class="table display">
-                <thead>
-                    <tr>
-                        <th>类型</th>
-                        <th>数量</th>
-                        <th>账户地址</th>
-                        <th>Age</th>
-                        <th>时间</th>
-                    </tr>
-                </thead>
-
-                <tfoot>
-                    <tr>
-                        <th>类型</th>
-                        <th>数量</th>
-                        <th>账户地址</th>
-                        <th>Age</th>
-                        <th>时间</th>
-                    </tr>
-                </tfoot>
-
-                <tbody>
-                    <tr v-for="item in effects_info">
-                        <td>{{item.type}}</td>
-                        <td>+{{item.amount}} {{item.asset_code}}</td>
-                        <td>{{item.from}}</td>
-                        <td>61</td>
-                        <td>2011/04/25</td>
-                    </tr>
-                </tbody>
-            </table>
-
-
+          <table class="table table-striped">
+            <thead>
+              <tr>
+                <th>类型</th>
+                <th>数量</th>
+                <th>交易事件</th>
+                <th>Age</th>
+                <th>时间</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="item in effects_info">
+                  <td>{{item.type}}</td>
+                  <td>+{{item.amount}} {{item.asset_code}}</td>
+                  <td>
+                    {{item.from}}
+                    <i class="fa fa-long-arrow-right"></i>
+                    {{item.to}}
+                  </td>
+                  <td>61</td>
+                  <td>2011/04/25</td>
+              </tr>
+            </tbody>
+          </table>
         </div>
 
       </div>
     </div>
     <!-- End Panel -->
+
   </div>
 </template>
 
@@ -57,53 +59,15 @@ var server = new StellarSdk.Server('https://horizon-testnet.stellar.org');
     data(){
         return{
           effects_info:[],
+          tipSuccess:''
         }
     },
     mounted(){
       var vm = this;
       vm.stream_effects();
-      setTimeout(function () {
-        vm.history_render();
-      },5000);
       //end
     },
     methods:{
-      history_render:function () {
-        $('#example0').DataTable();
-          var table = $('#example').DataTable({
-              "columnDefs": [
-                  { "visible": false, "targets": 2 }
-              ],
-              "order": [[ 2, 'asc' ]],
-              "displayLength": 25,
-              "drawCallback": function ( settings ) {
-                  var api = this.api();
-                  var rows = api.rows( {page:'current'} ).nodes();
-                  var last=null;
-
-                  api.column(2, {page:'current'} ).data().each( function ( group, i ) {
-                      if ( last !== group ) {
-                          $(rows).eq( i ).before(
-                              '<tr class="group"><td colspan="5">'+group+'</td></tr>'
-                          );
-
-                          last = group;
-                      }
-                  } );
-              }
-          } );
-
-          // Order by the grouping
-          $('#example tbody').on( 'click', 'tr.group', function () {
-              var currentOrder = table.order()[0];
-              if ( currentOrder[0] === 2 && currentOrder[1] === 'asc' ) {
-                  table.order( [ 2, 'desc' ] ).draw();
-              }
-              else {
-                  table.order( [ 2, 'asc' ] ).draw();
-              }
-          } );
-      },
       stream_effects:function () {
         //初始化函数
         var account_id = StellarSdk.Keypair
@@ -130,15 +94,18 @@ var server = new StellarSdk.Server('https://horizon-testnet.stellar.org');
                 else {
                     asset = payment.asset_code;
                 }
+                if(payment.from == account_id){
+
+                }
                 var num = new Number(payment.amount)
                 var effects_code = {
                   type        : payment.type,
                   amount      : num.toFixed(2),
                   asset_code  : asset,
-                  from        : payment.from
+                  from        : payment.from === account_id?"我的账户":payment.from,
+                  to        : payment.to === account_id?"我的账户":payment.to,
                 }
 
-                // console.log(payment.amount + ' ' + asset + ' from ' + payment.from);
                 arr.push(effects_code);
                 vm.effects_info = arr;
               },
@@ -151,3 +118,9 @@ var server = new StellarSdk.Server('https://horizon-testnet.stellar.org');
 //end
 }
 </script>
+<style scope>
+.table-striped{
+  overflow: auto;
+  height: 500px;
+}
+</style>

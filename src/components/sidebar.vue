@@ -20,13 +20,13 @@
         </span>锚点(资产管理)<span class="label label-default"></span>
       </router-link>
     </li>
-    <li>
+    <!-- <li>
       <router-link to="/exchange">
         <span class="icon color6">
           <i class="fa fa-line-chart"></i>
         </span>交易<span class="label label-default"></span>
       </router-link>
-    </li>
+    </li> -->
 
   </ul>
 

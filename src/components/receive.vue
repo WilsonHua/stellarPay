@@ -5,9 +5,9 @@
     <hr />
     <div class="address">
      <h4 class="box">
-      <span class="font-w-400 font-title">SBURDBYROWFHSV7IPUYUCO45DVQ4LQ5SZZXIHLBZJKBAPVT3DDX2XB6U</span>
+      <span class="font-w-400 font-title">{{public_key}}</span>
     </h4>
-     <button class="btn btn-success">复制钱包地址</button>
+     <button class="btn btn-primary">复制钱包地址</button>
     </div>
     <br>
     <p class="literal">提示：扫描下方二维码，可快速进行支付。</p>
@@ -20,7 +20,16 @@
 </template>
 
 <script>
+var StellarSdk = require('stellar-sdk')
+var account_id = StellarSdk.Keypair
+      .fromSeed(sessionStorage.Keypair).accountId();
+      console.log(account_id)
 export default{
+  data(){
+    return {
+      public_key:account_id
+    }
+  },
   methods:{
 
   }

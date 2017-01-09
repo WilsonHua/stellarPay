@@ -3,6 +3,7 @@
 <template>
 
   <div class="content">
+
       <!-- Start Page Loading -->
       <div class="loading"><img src="static/img/loading.gif" alt="loading-img"></div>
       <!-- End Page Loading -->
@@ -36,17 +37,15 @@
       <!-- Start Top balance -->
       <keep-alive>
       <balance></balance>
-      </keep-alive>
       <!-- End Top balance -->
+      </keep-alive>
 
       <!-- Start Transfer -->
       <transfer></transfer>
       <!-- End Transfer -->
       <receive></receive>
       <!-- Start history -->
-      <keep-alive>
-      <history  keep-alive></history>
-      </keep-alive>
+      <history></history>
       <!-- End history -->
 
     </div>
@@ -59,8 +58,7 @@
 
     </div>
     <!-- End Second Row -->
-
-
+<div>User {{ $route.params.username }}</div>
     <!-- Start Third Row -->
     <div class="row">
 
@@ -135,7 +133,7 @@
   <!-- Start Footer -->
   <div class="row footer">
     <div class="col-md-6 text-left">
-    Copyright © 2015 <a href="#" target="_blank">@block.lol</a> All rights reserved.
+    Copyright © 2017 <a href="#" target="_blank"></a> All rights reserved.
     </div>
     <div class="col-md-6 text-right">
       Design and Developed by <a href="#" target="_blank">@block.lol</a>
@@ -157,7 +155,7 @@ import receive from './receive'
 export default{
   data(){
       return{
-        accountID:sessionStorage.Keypair
+        accountID:sessionStorage.Keypair,
       }
   },
   components:{
