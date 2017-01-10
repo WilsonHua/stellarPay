@@ -13,12 +13,11 @@
 
     <!-- Start Panel -->
     <div class="col-md-12">
-      <div class="panel panel-default" style="500px">
-
+      <div class="panel panel-default">
         <div class="panel-title">
           交易记录
         </div>
-        <div class="panel-body table-responsive">
+        <div class="panel-body table-responsive" style="height:500px">
           <table class="table table-striped">
             <thead>
               <tr>
@@ -105,7 +104,6 @@ var server = new StellarSdk.Server('https://horizon-testnet.stellar.org');
                   from        : payment.from === account_id?"我的账户":payment.from,
                   to        : payment.to === account_id?"我的账户":payment.to,
                 }
-
                 arr.push(effects_code);
                 vm.effects_info = arr;
               },

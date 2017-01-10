@@ -94,7 +94,7 @@ export default{
     add_trust () {
       var vm = this;
       vm.$http.post('api/changeTrust',vm.trust_data)
-        .then((doneCallbacks, failCallbacks)=>{
+        .then((data, error)=>{
           if(data.body.code === 1){
             swal("操作成功!", "您已成功添加锚点！", "success");
             vm.$set(vm.trust_data,{})
@@ -106,7 +106,7 @@ export default{
           else {
             vm.show = true;
             swal("操作失败!", data.body.message || data.body.message.errno, "error")
-            console.log(data.body.message)
+            console.info(data.body.message)
           }
 
         })
@@ -115,8 +115,15 @@ export default{
       var vm = this;
       vm.$http.get('api/loadAccount')
         .then((doneCallbacks, failCallbacks)=>{
-            vm.anchors_info = doneCallbacks.body.value.balances
-             vm.anchors_info.pop();
+            var anchor_obj = doneCallbacks.body.value.balances
+            vm.anchors_info = anchor_obj
+            for (var i = 0; i < anchor_obj.length; i++) {
+              var num = new Number(vm.anchors_info[i].balance);
+              var num1 = new Number(vm.anchors_info[i].limit);
+              vm.anchors_info[i].balance = Math.floor(num * 100) / 100 ;
+              vm.anchors_info[i].limit = Math.floor(num1 * 100) / 100 ;
+            }
+            vm.anchors_info.pop();
         })
     }
   }

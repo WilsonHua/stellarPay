@@ -66,9 +66,7 @@ export default{
             vm.show = 'true'
         })
     },
-    alert:function () {
-      swal("", "")
-    }
+
   }
 
 

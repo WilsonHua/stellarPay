@@ -21,13 +21,10 @@
 
 <script>
 var StellarSdk = require('stellar-sdk')
-var account_id = StellarSdk.Keypair
-      .fromSeed(sessionStorage.Keypair).accountId();
-      console.log(account_id)
 export default{
   data(){
     return {
-      public_key:account_id
+      public_key:StellarSdk.Keypair.fromSeed(sessionStorage.Keypair).accountId()
     }
   },
   methods:{

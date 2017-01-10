@@ -7,14 +7,6 @@
       </div>
       <hr>
       <form class="form-horizontal" role="form">
-
-        <!-- To -->
-        <!-- <div class="form-group">
-          <label for="inputAddress" class="col-sm-2 control-label">To</label>
-          <div class="col-xs-9">
-            <input type="text" class="form-control" v-model='payment_data.address' placeholder="Public key or Address">
-          </div>
-        </div> -->
         <div class="form-group" >
           <label class="col-sm-2 control-label">账户</label>
           <div class="col-sm-10">
@@ -39,7 +31,7 @@
         <div class="form-group">
           <label for="exampleInputAmount" class="col-sm-2 control-label">资产</label>
           <div class="col-sm-10">
-            <select class="form-control" v-model='payment_data.asset_code'>
+            <select class="form-control" v-model='payment_data.asset_code' @change="onselect">
               <option v-if='item.asset_code==null' v-for="item in account_info">XLM</option>
               <option v-else>{{item.asset_code}}</option>
             </select>
@@ -50,10 +42,10 @@
           <label for="inputUsername" class="col-sm-2 control-label">发行者</label>
           <div class="col-sm-10">
             <label class="sr-only">Login</label>
-            <div class="input-group">
-              <div class="input-group-addon"><i class="fa fa-user"></i></div>
-              <input type="text" class="form-control" v-model='payment_data.asset_issuer' placeholder="输入该资产发行人的账户地址">
-            </div>
+              <!-- <div class="input-group-addon"><i class="fa fa-user"></i></div> -->
+              <select class="form-control" v-model='payment_data.asset_issuer'>
+                <option v-for="item in this_issuer">{{item}}</option>
+              </select>
           </div>
         </div>
 
@@ -104,6 +96,7 @@ export default{
           memo_type:'Memo Text'
         },
         account_info:[],
+        this_issuer:[],
         validator_obj:{
           accountID:'true',
           amount:'true',
@@ -140,12 +133,12 @@ export default{
               swal("操作失败!", "对方账户尚未信任", "error")
               return;
             }
-            swal("操作失败!", "提交失败，请检查填写是否正确", "error")
+            swal("操作失败!", "请检查填写是否正确或该资产余额不足", "error")
           }
           else {
             vm.show = true;
             swal("发送失败!", data.body.message || data.body.message.errno, "error")
-            console.log(data.body.message)
+            console.info("错误代码："+data.body.message)
           }
         })
     },
@@ -153,11 +146,27 @@ export default{
       var vm = this;
       vm.$http.get('api/loadAccount')
         .then((doneCallbacks, failCallbacks)=>{
-          vm.account_info = doneCallbacks.body.value.balances;
+            vm.account_info = doneCallbacks.body.value.balances;
+
+            console.info(vm.account_info)
         })
     },
     validator (){
       validator_obj
+    },
+    onselect (){
+      var vm = this;
+      var account_obj = vm.account_info
+      vm.this_issuer=[]
+      console.log("当前选择的资产:"+vm.payment_data.asset_code)
+      for (var i = 0; i < account_obj.length; i++) {
+        if(account_obj[i].asset_code === vm.payment_data.asset_code){
+            vm.this_issuer.push(account_obj[i].asset_issuer)
+        }
+      }
+      vm.payment_data.asset_issuer = vm.this_issuer[0]
+
+      console.log("当前选择的资产的发行人:"+vm.this_issuer[0]);
     }
   }
 };

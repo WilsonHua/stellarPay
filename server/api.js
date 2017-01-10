@@ -25,7 +25,7 @@ var sourceKeys ='',sourceAccount='';
 router.post('/kInfo',function (req,res) {
         sourceKeys = StellarSdk.Keypair.fromSeed(req.body.Keypair);
         sourceAccount = sourceKeys.accountId();
-        console.log("账户"+sourceAccount+"登录成功");
+        console.log("账户"+sourceAccount+);
 
         responseData.code = 1;
         res.json(responseData);

@@ -147,6 +147,7 @@
 </template>
 
 <script>
+
 import balance from './balance'
 import history from './history'
 import transfer from './transfer'
