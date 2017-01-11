@@ -32,7 +32,8 @@
                             <label>上限</label>
                             <input type="text" maxlength = "11" class="form-control" v-model='trust_data.limit' placeholder="选择添加的资产数量上限，为空则默认没有上限">
                         </div>
-                        <a href="javascript:void(0);" class="btn btn-primary" v-on:click="add_trust">确认添加</a>
+                        <a href="javascript:void(0);" class="btn btn-primary" v-on:click="add_trust" v-if='show'>确认添加</a>
+                        <img src="static/img/loading/loading5.gif" id='loading-wh' v-if='!show'>
                     </form>
                   </div>
               </div>
@@ -83,7 +84,8 @@ export default{
           asset_code:'',
           limit:'',
         },
-        anchors_info:[]
+        anchors_info:[],
+        show:'true'
     }
   },
   mounted(){
@@ -93,18 +95,21 @@ export default{
   methods:{
     add_trust () {
       var vm = this;
+      vm.show = ''
       vm.$http.post('api/changeTrust',vm.trust_data)
         .then((data, error)=>{
           if(data.body.code === 1){
             swal("操作成功!", "您已成功添加锚点！", "success");
+            vm.show = 'true'
             vm.$set(vm.trust_data,{})
             vm.load_trust_list()
           }
           else if(data.body.message.status === 400){
+            vm.show = 'true'
             swal("操作失败!", "提交失败，请检查填写是否正确", "error")
           }
           else {
-            vm.show = true;
+            vm.show = 'true'
             swal("操作失败!", data.body.message || data.body.message.errno, "error")
             console.info(data.body.message)
           }

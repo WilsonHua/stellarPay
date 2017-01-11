@@ -3,7 +3,7 @@
 
   <!-- Start App Logo -->
   <div class="applogo">
-    <a href="/" class="logo">blcok.lol</a>
+    <a href="/" class="logo">stellarPay</a>
   </div>
   <!-- End App Logo -->
 

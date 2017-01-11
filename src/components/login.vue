@@ -5,7 +5,7 @@
   <form action="index.html">
     <div class="top">
       <img src="/static/img/kode-icon.png" alt="icon" class="icon profile">
-      <h1>block.lol</h1>
+      <h1>stellarpay</h1>
       <h4>输入私钥即可登录</h4>
     </div>
     <div class="form-area">

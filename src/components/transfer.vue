@@ -31,24 +31,24 @@
         <div class="form-group">
           <label for="exampleInputAmount" class="col-sm-2 control-label">资产</label>
           <div class="col-sm-10">
-            <select class="form-control" v-model='payment_data.asset_code' @change="onselect">
+            <select class="form-control" v-show="input_show" v-model='payment_data.asset_code' @change="onselect">
               <option v-if='item.asset_code==null' v-for="item in account_info">XLM</option>
               <option v-else>{{item.asset_code}}</option>
             </select>
+            <input class="form-control" type="text"  v-show="!input_show" placeholder="输入资产名称">
+            <a href="javascript:void(0)" v-on:click="toggle_input">手动输入</a>
           </div>
         </div>
         <!-- issuer Address -->
         <div class="form-group"  v-if='payment_data.asset_code!=="XLM"'>
           <label for="inputUsername" class="col-sm-2 control-label">发行者</label>
           <div class="col-sm-10">
-            <label class="sr-only">Login</label>
-              <!-- <div class="input-group-addon"><i class="fa fa-user"></i></div> -->
               <select class="form-control" v-model='payment_data.asset_issuer'>
                 <option v-for="item in this_issuer">{{item}}</option>
               </select>
+
           </div>
         </div>
-
         <!-- Memo -->
         <div class="form-group">
           <label for="inputNumber" class="col-sm-2 control-label">备注</label>
@@ -101,7 +101,8 @@ export default{
           accountID:'true',
           amount:'true',
         },
-        show:true
+        show:true,
+        input_show:true
       }
   },
   mounted(){
@@ -153,6 +154,10 @@ export default{
     },
     validator (){
       validator_obj
+    },
+    toggle_input(){
+      var vm = this;
+      vm.input_show=''
     },
     onselect (){
       var vm = this;
