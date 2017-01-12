@@ -17,7 +17,7 @@
         <div class="panel-title">
           交易记录
         </div>
-        <div class="panel-body table-responsive" style="height:500px">
+        <div class="panel-body table-responsive" style="max-height:500px">
           <table class="table table-striped">
             <thead>
               <tr>
@@ -42,6 +42,7 @@
               </tr>
             </tbody>
           </table>
+          <div class="margin-t-10 text-center color6 f-size-16">暂无任何交易</div>
         </div>
 
       </div>

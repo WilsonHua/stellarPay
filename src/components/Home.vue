@@ -58,12 +58,10 @@
 
     </div>
     <!-- End Second Row -->
-<div>User {{ $route.params.username }}</div>
     <!-- Start Third Row -->
-    <div class="row">
+    <!-- <div class="row">
 
 
-      <!-- Start General Stats -->
       <div class="col-md-12 col-lg-6">
         <div class="panel panel-widget" style="height:205px;">
           <div class="panel-title">
@@ -81,9 +79,6 @@
           </div>
         </div>
       </div>
-      <!-- End General Stats -->
-
-      <!-- Start TwitterBox -->
       <div class="col-md-6 col-lg-3">
         <div class="widget socialbox" style="background:#02A8F3; height:205px;">
 
@@ -101,9 +96,7 @@
 
         </div>
       </div>
-      <!-- End TwitterBox -->
 
-      <!-- Start FacebookBox -->
       <div class="col-md-6 col-lg-3">
         <div class="widget socialbox" style="background:#47639E; height:205px;">
 
@@ -121,9 +114,8 @@
 
         </div>
       </div>
-      <!-- End FacebookBox -->
 
-    </div>
+    </div> -->
     <!-- End Third Row -->
 
   <!-- </div> -->
@@ -136,7 +128,7 @@
     Copyright © 2017 <a href="#" target="_blank"></a> All rights reserved.
     </div>
     <div class="col-md-6 text-right">
-      Design and Developed by <a href="#" target="_blank">@block.lol</a>
+      <!-- Design and Developed by <a href="#" target="_blank">@block.lol</a> -->
     </div>
   </div>
   <!-- End Footer -->
@@ -156,7 +148,6 @@ import receive from './receive'
 export default{
   data(){
       return{
-        accountID:sessionStorage.Keypair,
       }
   },
   components:{

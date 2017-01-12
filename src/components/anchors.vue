@@ -4,13 +4,9 @@
     <div class="row">
       <div class="col-lg-12">
       <div class="panel panel-widget transfer-box clearfix">
-            <div class="panel-title">
+            <!-- <div class="panel-title">
                 添加锚点
-                <!-- <ul class="panel-tools">
-                  <li><a class="icon"><i class="fa fa-refresh"></i></a></li>
-                  <li><a class="icon closed-tool"><i class="fa fa-times"></i></a></li>
-                </ul> -->
-            </div>
+            </div> -->
             <div>
               <div id="anchor-page">
                   <div>
@@ -50,18 +46,18 @@
               <thead>
                 <tr>
                     <td>发行方</td>
-                    <td>资产名字</td>
+                    <td>资产名称</td>
                     <td>余额</td>
                     <td>上限</td>
                     <td></td>
                 </tr>
               </thead>
-              <tr v-for="item in anchors_info">
+              <tr v-for="(item ,index) in anchors_info">
                   <td>{{item.asset_issuer}}</td>
                   <td>{{item.asset_code}}</td>
                   <td>{{item.balance}}</td>
                   <td>{{item.limit}}</td>
-                  <td><a v-if='item.balance == 0' class="btn-xs btn-danger">删除</a></td>
+                  <td><a href="javascript:void(0)" v-if='item.balance == 0' v-show="delete_btn" v-on:click="remove_trust(index)" class="btn-xs btn-danger">删除</a></td>
                   <hr>
               </tr>
               </tbody>
@@ -74,8 +70,8 @@
 </template>
 
 <script>
-// const sourceAcoount = StellarSdk.Keypair
-//       .fromSeed(sessionStorage.Keypair).accountId();
+const StellarSdk = require('stellar-sdk')
+const server = new StellarSdk.Server('https://horizon-testnet.stellar.org');
 export default{
   data(){
       return{
@@ -85,52 +81,105 @@ export default{
           limit:'',
         },
         anchors_info:[],
-        show:'true'
+        show:'true',
+        delete_btn:true
     }
   },
   mounted(){
     var vm = this;
+
+    const sourceKeys =StellarSdk.Keypair.fromSeed(sessionStorage.Keypair);
+    const sourceAccount = StellarSdk.Keypair
+          .fromSeed(sessionStorage.Keypair).accountId();
+
     this.load_trust_list()
   },
   methods:{
     add_trust () {
       var vm = this;
-      vm.show = ''
-      vm.$http.post('api/changeTrust',vm.trust_data)
-        .then((data, error)=>{
-          if(data.body.code === 1){
-            swal("操作成功!", "您已成功添加锚点！", "success");
-            vm.show = 'true'
-            vm.$set(vm.trust_data,{})
-            vm.load_trust_list()
-          }
-          else if(data.body.message.status === 400){
-            vm.show = 'true'
-            swal("操作失败!", "提交失败，请检查填写是否正确", "error")
-          }
-          else {
-            vm.show = 'true'
-            swal("操作失败!", data.body.message || data.body.message.errno, "error")
-            console.info(data.body.message)
-          }
 
-        })
+      vm.show = ''
+
+      var anchor_accountId =  vm.trust_data.asset_issuer ,
+          asset_type = vm.trust_data.asset_code ,
+          limit = vm.trust_data.limit;
+
+      vm.change_trust(anchor_accountId,asset_type,limit,"已成功添加锚点！")
+    },
+    remove_trust (index) {
+      var vm = this;
+
+      swal({
+            title: "操作提交中...",
+            text: "预计时间：3-5S,请耐心等待...",
+            imageUrl: "static/img/loading/loading3.gif"
+          });
+
+      var anchor_accountId =  vm.anchors_info[index].asset_issuer ,
+          asset_type = vm.anchors_info[index].asset_code;
+
+          // vm.delete_btn = false
+      vm.change_trust(anchor_accountId,asset_type,'0',"已删除该锚点！")
+    },
+    change_trust (anchor_accountId,asset_type,limit,result_text){
+      const sourceKeys =StellarSdk.Keypair.fromSeed(sessionStorage.Keypair),
+            sourceAccount = StellarSdk.Keypair.fromSeed(sessionStorage.Keypair).accountId(),
+            vm = this;
+
+           // Create an object to represent the new asset
+           var new_asset = new StellarSdk.Asset(asset_type, anchor_accountId);
+
+           // First, the receiving account must trust the asset
+             server.loadAccount(sourceAccount)
+               .then(function(receiver) {
+                   var transaction = new StellarSdk.TransactionBuilder(receiver)
+                   // The `changeTrust` operation creates (or alters) a trustline
+                   // The `limit` parameter below is optional
+                       .addOperation(StellarSdk.Operation.changeTrust({
+                           asset: new_asset,
+                           limit: limit
+                       }))
+                       .build();
+                   transaction.sign(sourceKeys);
+                   return server.submitTransaction(transaction);
+               })
+               .then(function (result) {
+                 swal("操作成功!", result_text, "success");
+                 vm.show = 'true'
+                 vm.$set(vm.trust_data,{})
+                 vm.load_trust_list()
+               })
+               .catch(function(error) {
+                 if(error.status === 400){
+                   vm.show = 'true'
+                   swal("操作失败!", "提交失败，请检查填写是否正确", "error")
+                 }
+                 else {
+                   vm.show = 'true'
+                   swal("操作失败!", error || error.errno, "error")
+                   console.info(error)
+                 }
+               });
     },
     load_trust_list () {
+      const StellarSdk = require('stellar-sdk')
+      const server = new StellarSdk.Server('https://horizon-testnet.stellar.org');
+      const accountId = StellarSdk.Keypair
+            .fromSeed(sessionStorage.Keypair).accountId();
       var vm = this;
-      vm.$http.get('api/loadAccount')
-        .then((doneCallbacks, failCallbacks)=>{
-            var anchor_obj = doneCallbacks.body.value.balances
-            vm.anchors_info = anchor_obj
-            for (var i = 0; i < anchor_obj.length; i++) {
-              var num = new Number(vm.anchors_info[i].balance);
-              var num1 = new Number(vm.anchors_info[i].limit);
-              vm.anchors_info[i].balance = Math.floor(num * 100) / 100 ;
-              vm.anchors_info[i].limit = Math.floor(num1 * 100) / 100 ;
-            }
-            vm.anchors_info.pop();
-        })
+      server.loadAccount(accountId).then(function(account) {
+        var anchor_obj = account.balances
+        vm.anchors_info = anchor_obj
+        for (var i = 0; i < anchor_obj.length; i++) {
+          var num = new Number(vm.anchors_info[i].balance);
+          var num1 = new Number(vm.anchors_info[i].limit);
+          vm.anchors_info[i].balance = Math.floor(num * 100) / 100 ;
+          vm.anchors_info[i].limit = Math.floor(num1 * 100) / 100 ;
+        }
+        vm.anchors_info.pop();
+      });
     }
+
   }
 };
 </script>

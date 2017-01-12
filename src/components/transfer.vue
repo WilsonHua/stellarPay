@@ -36,7 +36,7 @@
               <option v-else>{{item.asset_code}}</option>
             </select>
             <input class="form-control" type="text"  v-show="!input_show" placeholder="输入资产名称">
-            <a href="javascript:void(0)" v-on:click="toggle_input">手动输入</a>
+            <!-- <a href="javascript:void(0)" v-on:click="toggle_input">手动输入</a> -->
           </div>
         </div>
         <!-- issuer Address -->
@@ -77,14 +77,16 @@
         </div>
       </form>
     </div>
-
   </div>
 
 
 </template>
 
 <script>
+const StellarSdk = require('stellar-sdk')
+const server = new StellarSdk.Server('https://horizon-testnet.stellar.org');
 export default{
+
   data(){
       return{
         payment_data:{
@@ -102,15 +104,22 @@ export default{
           amount:'true',
         },
         show:true,
-        input_show:true
+        input_show:true,
       }
   },
   mounted(){
+    var vm = this;
+
+    const sourceKeys =StellarSdk.Keypair.fromSeed(sessionStorage.Keypair);
+    const sourceAccount = sourceKeys.accountId();
+
     this.loadAccount ()
   },
   methods:{
     sending () {
       var vm = this;
+      const sourceKeys =StellarSdk.Keypair.fromSeed(sessionStorage.Keypair);
+      const sourceAccount = sourceKeys.accountId();
       // if(vm.payment_data.address===''){
       //   vm.validator_obj.accountID = null;
       //   return;
@@ -120,37 +129,104 @@ export default{
       //   return;
       // }
       vm.show = false;
-      vm.$http.post('api/payment',vm.payment_data)
-        .then((data, error)=>{
-          if(data.body.code === 1){
-            vm.$set(vm.payment_data,{})
-            vm.show = true;
-            swal("发送成功!", "你成功完成了这笔支付！", "success");
+      var destinationId = vm.payment_data.address,
+          amount = vm.payment_data.amount,
+          new_asset = new StellarSdk.Asset( vm.payment_data.asset_code, vm.payment_data.asset_issuer ),
+          amount_type = vm.payment_data.asset_code ==='XLM'? StellarSdk.Asset.native():new_asset,
+          memo = vm.payment_data.memo;
+      // First, check to make sure that the destination account exists.
+      // You could skip this, but if the account does not exist, you will be charged
+      // the transaction fee when the transaction fails.
+      server.loadAccount(destinationId)
+      // If the account is not found, surface a nicer error message for logging.
+      .catch(StellarSdk.NotFoundError, function (error) {
+          throw new Error('对方账户地址不存在');
+      })
+      .then(function() {
+            return server.loadAccount(sourceKeys.accountId());
+      })
+      .then(function(inAccount) {
+          console.log("账户地址：..."+inAccount)
+          // Start building the transaction.
+          var transaction = new StellarSdk.TransactionBuilder(inAccount)
+            .addOperation(StellarSdk.Operation.payment({
+              destination: destinationId,
+              // Because Stellar allows transaction in many currencies, you must
+              // specify the asset type. The special "native" asset represents Lumens.
+              asset: amount_type,
+              amount: amount
+          }))
+          // A memo allows you to add your own metadata to a transaction. It's
+          // optional and does not affect how Stellar treats the transaction.
+          .addMemo(StellarSdk.Memo.text(memo))
+          .build();
+          // Sign the transaction to prove you are actually the person sending it.
+          transaction.sign(sourceKeys);
+          // And finally, send it off to Stellar!
+          return server.submitTransaction(transaction);
+      })
+      .then(function(result) {
+        vm.$set(vm.payment_data,{})
+        vm.show = true;
+        swal("发送成功!", "你成功完成了这笔支付！", "success");
+      })
+      .catch(function(error) {
+        if(error.status === 400){
+          vm.show = true;
+          const ecode = error.extras.result_codes.operations[0];
+          console.log(ecode);
+          if(ecode==="op_no_trust"){
+            swal("操作失败!", "对方账户尚未信任", "error")
+            return;
           }
-          else if(data.body.message.status === 400){
-            const ecode = data.body.message.extras.result_codes.operations[0];
-            console.log(ecode);
-            if(ecode==="op_no_trust"){
-              swal("操作失败!", "对方账户尚未信任", "error")
-              return;
-            }
-            swal("操作失败!", "请检查填写是否正确或该资产余额不足", "error")
-          }
-          else {
-            vm.show = true;
-            swal("发送失败!", data.body.message || data.body.message.errno, "error")
-            console.info("错误代码："+data.body.message)
-          }
-        })
+          swal("操作失败!", "请检查填写是否正确或该资产余额不足", "error")
+        }
+        else {
+          vm.show = true;
+          swal("发送失败!", error || error.errno, "error")
+          console.info("错误代码："+error.detail)
+        }
+      });
+
+
+      // vm.$http.post('api/payment',vm.payment_data)
+      //   .then((data, error)=>{
+      //     if(data.body.code === 1){
+      //       vm.$set(vm.payment_data,{})
+      //       vm.show = true;
+      //       swal("发送成功!", "你成功完成了这笔支付！", "success");
+      //     }
+      //     else if(data.body.message.status === 400){
+      //       const ecode = data.body.message.extras.result_codes.operations[0];
+      //       console.log(ecode);
+      //       if(ecode==="op_no_trust"){
+      //         swal("操作失败!", "对方账户尚未信任", "error")
+      //         return;
+      //       }
+      //       swal("操作失败!", "请检查填写是否正确或该资产余额不足", "error")
+      //     }
+      //     else {
+      //       vm.show = true;
+      //       swal("发送失败!", data.body.message || data.body.message.errno, "error")
+      //       console.info("错误代码："+data.body.message)
+      //     }
+      //   })
     },
     loadAccount () {
       var vm = this;
-      vm.$http.get('api/loadAccount')
-        .then((doneCallbacks, failCallbacks)=>{
-            vm.account_info = doneCallbacks.body.value.balances;
+      const sourceKeys =StellarSdk.Keypair.fromSeed(sessionStorage.Keypair);
+      const sourceAccount = sourceKeys.accountId();
 
-            console.info(vm.account_info)
-        })
+      server.loadAccount(sourceAccount).then(function(account) {
+        vm.account_info = account.balances;
+        console.info(vm.account_info)
+      });
+      // vm.$http.get('api/loadAccount')
+      //   .then((doneCallbacks, failCallbacks)=>{
+      //       vm.account_info = doneCallbacks.body.value.balances;
+      //
+      //       console.info(vm.account_info)
+      //   })
     },
     validator (){
       validator_obj

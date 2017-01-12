@@ -47,24 +47,21 @@ export default{
         return;
       }
       else {
-        sessionStorage.Keypair = vm.data.Keypair;
-        vm.$http.post('api/kInfo',vm.data)
-          .then((data, error)=>{
-            // if(data.code!==1){
-            //   return;
-            // }
-            vm.$router.push('/');
-          })
+          sessionStorage.Keypair = vm.data.Keypair;
+          vm.$router.push('/');
       }
     },
     createAccount:function () {
-      var vm = this;
-      vm.$http.get('api/create')
-        .then((data, error)=>{
-            vm.Account_key = data.body.value
-            console.log(vm.Account_key);
-            vm.show = 'true'
-        })
+      const vm = this,
+            StellarSdk = require('stellar-sdk'),
+            server = new StellarSdk.Server('https://horizon-testnet.stellar.org'),
+            pair = StellarSdk.Keypair.random();
+      const Account = {
+          public_key:pair.accountId(),
+          seed:pair.seed()
+      };
+      vm.Account_key = Account;
+      vm.show = 'true'
     },
 
   }
