@@ -20,7 +20,6 @@ router.use(function(req,res,next){
 
 //账户
 var sourceKeys ='',sourceAccount='';
-console.log(111111111)
 
 router.post('/kInfo',function (req,res) {
         sourceKeys = StellarSdk.Keypair.fromSeed(req.body.Keypair);
@@ -85,7 +84,7 @@ router.post('/changeTrust',function (req,res) {
 
 // *****************
 // ************
-// Payment
+// loadAccount
 // ************
 // *****************
 
