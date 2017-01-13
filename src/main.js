@@ -12,6 +12,7 @@ import Home from './components/Home'
 import anchors from './components/anchors'
 import exchange from './components/exchange'
 import login from './components/login'
+import changelogs from './components/changelogs'
 
 
 Vue.use(vueRouter);
@@ -30,6 +31,7 @@ const routes = [
             {path: '/', name: 'home', component: Home},
             {path: '/exchange', name: 'exchange', component: exchange},
             {path: '/anchors', name: 'anchors', component: anchors},
+            {path: '/changelogs', name: 'changelogs', component: changelogs},
         ]
     },
     {

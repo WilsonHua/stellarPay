@@ -84,7 +84,7 @@
 
 <script>
 const StellarSdk = require('stellar-sdk')
-const server = new StellarSdk.Server('https://horizon-testnet.stellar.org');
+const server = new StellarSdk.Server('https://horizon.stellar.org');
 export default{
 
   data(){
@@ -219,7 +219,6 @@ export default{
 
       server.loadAccount(sourceAccount).then(function(account) {
         vm.account_info = account.balances;
-        console.info(vm.account_info)
       });
       // vm.$http.get('api/loadAccount')
       //   .then((doneCallbacks, failCallbacks)=>{

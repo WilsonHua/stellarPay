@@ -71,7 +71,7 @@
 
 <script>
 const StellarSdk = require('stellar-sdk')
-const server = new StellarSdk.Server('https://horizon-testnet.stellar.org');
+const server = new StellarSdk.Server('https://horizon.stellar.org');
 export default{
   data(){
       return{
@@ -162,8 +162,6 @@ export default{
                });
     },
     load_trust_list () {
-      const StellarSdk = require('stellar-sdk')
-      const server = new StellarSdk.Server('https://horizon-testnet.stellar.org');
       const accountId = StellarSdk.Keypair
             .fromSeed(sessionStorage.Keypair).accountId();
       var vm = this;

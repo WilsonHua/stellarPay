@@ -30,7 +30,7 @@ export default{
   mounted(){
     var vm = this;
     const StellarSdk = require('stellar-sdk')
-    const server = new StellarSdk.Server('https://horizon-testnet.stellar.org');
+    const server = new StellarSdk.Server('https://horizon.stellar.org');
     const sourceKeys =StellarSdk.Keypair.fromSeed(sessionStorage.Keypair);
     const sourceAccount = StellarSdk.Keypair
           .fromSeed(sessionStorage.Keypair).accountId();

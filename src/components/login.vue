@@ -5,15 +5,16 @@
   <form action="index.html">
     <div class="top">
       <img src="/static/img/kode-icon.png" alt="icon" class="icon profile">
-      <h1>stellarpay</h1>
+      <h1>stellarPay</h1>
       <h4>输入私钥即可登录</h4>
     </div>
     <div class="form-area">
       <div class="group">
         <input type="password" class="form-control" placeholder="Secret key" v-model='data.Keypair'>
         <i class="fa fa-key"></i>
+        <span class="color10" v-show="login_error">私钥输入错误，请检查私钥格式</span>
       </div>
-      <button type="submit" v-on:click="submit" class="btn btn-default btn-block">登录</button>
+      <a href="javascript:void(0);" v-on:click="submit" class="btn btn-default btn-block">登录</a>
     </div>
     <div class="footer-links">
       <div class="text-right">
@@ -28,6 +29,8 @@
 </div>
 </template>
 <script>
+const StellarSdk = require('stellar-sdk'),
+      server = new StellarSdk.Server('https://horizon.stellar.org');
 export default{
   data(){
       return{
@@ -35,7 +38,8 @@ export default{
           Keypair:'',
         },
         Account_key:'',
-        show:''
+        show:'',
+        login_error:''
       }
   },
   mounted(){
@@ -43,18 +47,26 @@ export default{
   methods:{
     submit:function () {
       var vm = this;
-      if(vm.Keypair===null){
+      if(vm.data.Keypair===null){
         return;
       }
       else {
+
+        const sourceKeys =StellarSdk.Keypair.fromSeed(vm.data.Keypair);
+        const sourceAccount = sourceKeys.accountId();
+        server.loadAccount(sourceAccount).then(function(account) {
           sessionStorage.Keypair = vm.data.Keypair;
+          vm.login_error='';
           vm.$router.push('/');
+        })
+        .catch(function(error) {
+          vm.login_error=true;
+          console.log(error)
+        });
       }
     },
     createAccount:function () {
       const vm = this,
-            StellarSdk = require('stellar-sdk'),
-            server = new StellarSdk.Server('https://horizon-testnet.stellar.org'),
             pair = StellarSdk.Keypair.random();
       const Account = {
           public_key:pair.accountId(),

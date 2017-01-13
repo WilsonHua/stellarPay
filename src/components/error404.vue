@@ -11,7 +11,6 @@
         </form>
 
         <div class="bottom-links">
-          <a href="index.html" class="btn btn-default">Go Back</a>
           <a href="index.html" class="btn btn-light">Go Homepage</a>
         </div>
 

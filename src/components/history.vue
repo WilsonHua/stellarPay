@@ -42,7 +42,7 @@
               </tr>
             </tbody>
           </table>
-          <div class="margin-t-10 text-center color6 f-size-16">暂无任何交易</div>
+          <div class="margin-t-10 text-center color6 f-size-16" v-show="none_record">暂无任何交易</div>
         </div>
 
       </div>
@@ -54,12 +54,13 @@
 
 <script>
 var StellarSdk = require('stellar-sdk')
-var server = new StellarSdk.Server('https://horizon-testnet.stellar.org');
+var server = new StellarSdk.Server('https://horizon.stellar.org');
   export default {
     data(){
         return{
           effects_info:[],
-          tipSuccess:''
+          tipSuccess:'',
+          none_record:''
         }
     },
     mounted(){
@@ -75,6 +76,11 @@ var server = new StellarSdk.Server('https://horizon-testnet.stellar.org');
         var payments = server.payments().order('desc').forAccount(account_id);
         var arr = new Array();
         var vm = this;
+
+        if(vm.effects_info.length===0){
+          vm.none_record = true;
+        }
+
         payments.stream({
               onmessage: function(payment) {
                 // Record the paging token so we can start from here next time.
@@ -94,9 +100,7 @@ var server = new StellarSdk.Server('https://horizon-testnet.stellar.org');
                 else {
                     asset = payment.asset_code;
                 }
-                if(payment.from == account_id){
 
-                }
                 var num = new Number(payment.amount)
                 var effects_code = {
                   type        : payment.type,
@@ -107,6 +111,9 @@ var server = new StellarSdk.Server('https://horizon-testnet.stellar.org');
                 }
                 arr.push(effects_code);
                 vm.effects_info = arr;
+                if (vm.effects_info.length!==0){
+                  vm.none_record = '';
+                }
               },
               onerror: function(error) {
 

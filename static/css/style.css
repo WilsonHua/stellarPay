@@ -1838,12 +1838,12 @@ Login Pages
   margin-bottom: 20px;
 }
 .error-pages h1 {
-  color: #37363e;
+  color: #fff;
   font-family: 'Montserrat', sans-serif;
   font-size: 28px;
 }
 .error-pages h4 {
-  color: #767279;
+  color: #fff;
   font-weight: normal;
   font-size: 16px;
   margin-top: 10px;

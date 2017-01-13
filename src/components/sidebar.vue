@@ -32,7 +32,7 @@
 
   <ul class="sidebar-panel nav">
     <li class="sidetitle">更多</li>
-    <li><a href="changelogs.html"><span class="icon color12"><i class="fa fa-file-text-o"></i></span>更新日志</a></li>
+    <li><router-link to="/changelogs"><span class="icon color12"><i class="fa fa-file-text-o"></i></span>更新日志</router-link></li>
   </ul>
 
   <div class="sidebar-plan">
@@ -42,6 +42,7 @@
     </div>
   </div>
   <span class="space">60 % / 100 %</span>
+  <!-- <p>版本持续更新迭代中......</p> -->
   </div>
 
   </div>

@@ -79,7 +79,7 @@
 
 <script>
 var StellarSdk = require('stellar-sdk')
-var server = new StellarSdk.Server('https://horizon-testnet.stellar.org');
+var server = new StellarSdk.Server('https://horizon.stellar.org');
 
 export default{
   data(){
@@ -99,6 +99,7 @@ export default{
     var vm = this;
     const accountId = StellarSdk.Keypair
           .fromSeed(sessionStorage.Keypair).accountId();
+
     if(accountId!==''){
       console.log("账号验证成功");
       vm.SSE_balance(accountId)
