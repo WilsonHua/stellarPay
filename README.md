@@ -31,7 +31,7 @@ A wallet over stellar ---- low fees and fast payment!
 
 ## :scroll: Changelog
 
-Details changes for each release are documented in the [CHANGELOG.md](https://github.com/kazupon/vue-validator/blob/dev/CHANGELOG.md).
+
 
 
 ## :copyright: License
