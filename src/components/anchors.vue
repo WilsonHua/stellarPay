@@ -71,6 +71,7 @@
 
 <script>
 const StellarSdk = require('stellar-sdk')
+StellarSdk.Network.usePublicNetwork();
 const server = new StellarSdk.Server('https://horizon.stellar.org');
 export default{
   data(){
@@ -99,6 +100,12 @@ export default{
       var vm = this;
 
       vm.show = ''
+
+            swal({
+                  title: "操作提交中...",
+                  text: "预计时间：3-5S,请耐心等待...",
+                  imageUrl: "static/img/loading/loading3.gif"
+                });
 
       var anchor_accountId =  vm.trust_data.asset_issuer ,
           asset_type = vm.trust_data.asset_code ,

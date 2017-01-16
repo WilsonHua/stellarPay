@@ -31,6 +31,8 @@
 <script>
 const StellarSdk = require('stellar-sdk'),
       server = new StellarSdk.Server('https://horizon.stellar.org');
+      StellarSdk.Network.usePublicNetwork();
+
 export default{
   data(){
       return{
@@ -51,18 +53,14 @@ export default{
         return;
       }
       else {
-
-        const sourceKeys =StellarSdk.Keypair.fromSeed(vm.data.Keypair);
+        const sourceKeys = StellarSdk.Keypair.fromSeed(vm.data.Keypair);
         const sourceAccount = sourceKeys.accountId();
-        server.loadAccount(sourceAccount).then(function(account) {
+
           sessionStorage.Keypair = vm.data.Keypair;
           vm.login_error='';
           vm.$router.push('/');
-        })
-        .catch(function(error) {
+
           vm.login_error=true;
-          console.log(error)
-        });
       }
     },
     createAccount:function () {

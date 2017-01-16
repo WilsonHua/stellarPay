@@ -31,9 +31,12 @@ export default{
     var vm = this;
     const StellarSdk = require('stellar-sdk')
     const server = new StellarSdk.Server('https://horizon.stellar.org');
+    StellarSdk.Network.usePublicNetwork();
     const sourceKeys =StellarSdk.Keypair.fromSeed(sessionStorage.Keypair);
     const sourceAccount = StellarSdk.Keypair
           .fromSeed(sessionStorage.Keypair).accountId();
+    var crypto = require('crypto');
+    console.log(crypto)
 
     vm.public_key = sourceAccount
   },

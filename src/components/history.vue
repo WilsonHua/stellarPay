@@ -24,8 +24,8 @@
                 <th>类型</th>
                 <th>数量</th>
                 <th>交易事件</th>
-                <th>Age</th>
-                <th>时间</th>
+                <!-- <th>Age</th> -->
+                <!-- <th>时间</th> -->
               </tr>
             </thead>
             <tbody>
@@ -37,8 +37,8 @@
                     <i class="fa fa-long-arrow-right"></i>
                     {{item.to}}
                   </td>
-                  <td>61</td>
-                  <td>2011/04/25</td>
+                  <!-- <td>61</td> -->
+                  <!-- <td>2011/04/25</td> -->
               </tr>
             </tbody>
           </table>
@@ -55,6 +55,7 @@
 <script>
 var StellarSdk = require('stellar-sdk')
 var server = new StellarSdk.Server('https://horizon.stellar.org');
+StellarSdk.Network.usePublicNetwork();
   export default {
     data(){
         return{

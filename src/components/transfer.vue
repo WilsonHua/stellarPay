@@ -85,6 +85,7 @@
 <script>
 const StellarSdk = require('stellar-sdk')
 const server = new StellarSdk.Server('https://horizon.stellar.org');
+StellarSdk.Network.usePublicNetwork();
 export default{
 
   data(){
@@ -128,6 +129,11 @@ export default{
       //   vm.validator_obj.amount = null;
       //   return;
       // }
+      swal({
+            title: "操作提交中...",
+            text: "预计时间：3-5S,请耐心等待...",
+            imageUrl: "static/img/loading/loading3.gif"
+          });
       vm.show = false;
       var destinationId = vm.payment_data.address,
           amount = vm.payment_data.amount,

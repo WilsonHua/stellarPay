@@ -80,6 +80,7 @@
 <script>
 var StellarSdk = require('stellar-sdk')
 var server = new StellarSdk.Server('https://horizon.stellar.org');
+StellarSdk.Network.usePublicNetwork();
 
 export default{
   data(){
@@ -101,7 +102,6 @@ export default{
           .fromSeed(sessionStorage.Keypair).accountId();
 
     if(accountId!==''){
-      console.log("账号验证成功");
       vm.SSE_balance(accountId)
     }
   },
@@ -122,7 +122,6 @@ export default{
               },
               onerror: function(error) {
                 if(error.srcElement.readyState===2){
-                  console.log("未激活账户！");
                   vm.unactive = 'true'
                   $(".loading").fadeOut(1150);
                 }
