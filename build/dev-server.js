@@ -69,7 +69,7 @@ app.use(staticPath, express.static('./static'))
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}))
 // 模块的路由
-app.use('/api',require('../server/api'));
+// app.use('/api',require('../server/api'));
 
 module.exports = app.listen(port, function (err) {
   if (err) {
