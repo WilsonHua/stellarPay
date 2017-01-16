@@ -1,12 +1,12 @@
 # stellarPay
 
 
-A wallet over stellar ---- low fees and fast payment!
+A wallet over stellar ---- low fees and fast payment!More easy to use;
 
->:warning: NOTE: official release for Vue.js 2.0 not yet :construction:
+
 
 ## :ok: Compatibility
-- v1.0 alpha (**WIP** :construction:)
+- v1.1 alpha (**WIP** :construction:)
     - Vue.js `2.0.3` later
 
 ## :hammer: Development Setup
@@ -28,6 +28,7 @@ A wallet over stellar ---- low fees and fast payment!
 
     # lint & run all tests
     npm test
+
 
 ## :scroll: Changelog
 
