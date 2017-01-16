@@ -1,7 +1,7 @@
 {
-  "name": "vue-wallet",
-  "version": "1.0.0",
-  "description": "A  project",
+  "name": "stellarPay",
+  "version": "1.0.1",
+  "description": "A wallet over stellar ---- low fees and fast payment!",
   "author": "wilson Hua <huazhenghao8023@163.com>",
   "private": true,
   "scripts": {
@@ -30,7 +30,6 @@
     "connect-history-api-fallback": "^1.1.0",
     "css-loader": "^0.25.0",
     "eventsource-polyfill": "^0.9.6",
-    "express": "^4.13.3",
     "extract-text-webpack-plugin": "^1.0.1",
     "file-loader": "^0.9.0",
     "function-bind": "^1.0.2",
