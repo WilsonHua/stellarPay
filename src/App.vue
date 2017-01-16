@@ -1,9 +1,7 @@
 <template>
 
     <div id="wrapper">
-
         <router-view class="view one" name='header'></router-view>
-
         <router-view class="view two" name='sidebar'></router-view>
         <router-view></router-view>
     </div>
