@@ -1,7 +1,7 @@
 {
   "name": "stellarPay",
   "version": "1.0.1",
-  "description": "A wallet over stellar ---- low fees and fast payment!",
+  "description": "A payment service over stellar",
   "author": "wilson Hua <huazhenghao8023@163.com>",
   "private": true,
   "scripts": {
