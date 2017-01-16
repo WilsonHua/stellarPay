@@ -1,8 +1,7 @@
 # stellarPay
 
-
-A wallet over stellar ---- low fees and fast payment!More easy to use;
-
+A payment service over <a href='https://www.stellar.org'>stellar</a> ---- low fees and more fast!
+More easy to use;
 
 
 ## :ok: Compatibility
