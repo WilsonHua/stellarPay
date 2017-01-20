@@ -6,10 +6,12 @@ Do the best easy to use of the wallet.
 ##  Example
 
 > webapp wallet
-![Main view Example](https://github.com/WilsonHua/stellarPay/blob/master/static/img/alerticons/_20170113184152.png)
+
+![](https://github.com/WilsonHua/stellarPay/blob/master/static/img/alerticons/_20170113184152.png)
 
 > better h5 Responsive.
-![Main view Example](https://github.com/WilsonHua/stellarPay/blob/master/static/img/alerticons/_20170113183925.png)
+
+![](https://github.com/WilsonHua/stellarPay/blob/master/static/img/alerticons/_20170113183925.png)
 
 
 ## :hammer: Development Setup
