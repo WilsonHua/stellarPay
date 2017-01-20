@@ -1,36 +1,39 @@
 # stellarPay
 
-A payment service over <a href='https://www.stellar.org'>stellar</a> ---- low fees and more fast!
-More easy to use;
+> A payment service over <a href='https://www.stellar.org'>stellar</a> 
+Do the best easy to use of the wallet.
 
-
-## :ok: Compatibility
-- v1.1 alpha (**WIP** :construction:)
-    - Vue.js `2.0.3` later
+##  Example
+![Main view Example](https://github.com/WilsonHua/stellarPay/blob/master/static/img/alerticons/_20170113184152.png)
 
 ## :hammer: Development Setup
 
-    # install deps
-    npm install
+### Librairies and tools
 
-    # develop
-    npm run develop
+- Vuejs(2.0) + Vuex + vue-resource
+- webpack 
 
-    # build dist files
-    npm run build
+### Dependencies
 
-    # run unit tests only
-    npm run unit
+- Node.js >= 4.0.0
+- NPM >= 3.0.0
 
-    # run e2e tests only
-    npm run e2e
+### Installation
 
-    # lint & run all tests
-    npm test
+```bash
+$ npm install
+```
 
+### Running
+
+```bash
+$ # Development
+$ npm run dev
+$ # Build into ./build
+$ npm run build
+```
 
 ## :scroll: Changelog
-
 
 
 

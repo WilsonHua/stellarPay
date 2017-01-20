@@ -492,7 +492,7 @@ Sidebar
 ================================================================================= */
 .sidebar {
   width: 250px;
-  position: absolute;
+  position: fixed;;
   top: 60px;
   left: 0;
   font-family: 'Montserrat', sans-serif;

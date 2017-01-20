@@ -53,10 +53,11 @@ export default{
         return;
       }
       else {
-        const sourceKeys = StellarSdk.Keypair.fromSeed(vm.data.Keypair);
+        const pwd = $.trim(vm.data.Keypair)
+        const sourceKeys = StellarSdk.Keypair.fromSeed(pwd);
         const sourceAccount = sourceKeys.accountId();
 
-          sessionStorage.Keypair = vm.data.Keypair;
+          sessionStorage.Keypair = pwd;
           vm.login_error='';
           vm.$router.push('/');
 

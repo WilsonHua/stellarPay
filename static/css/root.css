@@ -20,7 +20,7 @@ Main Css
 @import url('style.css');
 
 /* Responsive Style */
-/*@import url('responsive.css');*/
+@import url('responsive.css');
 
 /* Shortcuts Css Codes */
 /*@import url('shortcuts.css');*/
